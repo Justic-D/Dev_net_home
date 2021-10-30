@@ -5,3 +5,5 @@
 Игнорировать файлы оканчивающиеся на .tfvars  
 Игнорировать файлы override.tf, override.tf и оканчивающиеся на _override.tf и _override.tf.json  
 Игнорировать файлы .terraformrc и terraform.rc  
+add new line  
+
