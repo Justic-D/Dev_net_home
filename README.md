@@ -160,7 +160,7 @@ provider supports automatic port collision detection and resolution.
 
 http://localhost:19999
 
-![img.png](img.png)![](https://i.ibb.co/rbDG8nR/Screenshot-2021-11-21-at-11-11-04.png)pic
+pic![](https://i.ibb.co/rbDG8nR/Screenshot-2021-11-21-at-11-11-04.png)
 
 #### 4. Можно ли по выводу `dmesg` понять, осознает ли ОС, что загружена не на настоящем оборудовании, а на системе виртуализации?
 
