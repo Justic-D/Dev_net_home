@@ -11,7 +11,7 @@ HOST: stackoverflow.com
 [press enter]
 [press enter]
 ```
-- В ответе укажите полученный HTTP код, что он означает?
+- В ответе укажите полученный HTTP код, что он означает?  
 
 ```shell
 $ telnet stackoverflow.com 80
