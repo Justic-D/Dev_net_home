@@ -1,4 +1,87 @@
-### Домашнее задание к занятию "3.5. Файловые системы"  
+### Домашнее задание к занятию "3.6. Компьютерные сети, лекция 1"  
+
+<details>
+
+#### 1. Работа c HTTP через телнет.
+- Подключитесь утилитой телнет к сайту stackoverflow.com telnet stackoverflow.com 80
+- отправьте HTTP запрос
+```shell
+GET /questions HTTP/1.0
+HOST: stackoverflow.com
+[press enter]
+[press enter]
+```
+- В ответе укажите полученный HTTP код, что он означает?
+
+```shell
+$ telnet stackoverflow.com 80
+Trying 151.101.1.69...
+Connected to stackoverflow.com.
+Escape character is '^]'.
+GET /questions HTTP/1.0
+HOST: stackoverflow.com
+
+HTTP/1.1 301 Moved Permanently
+cache-control: no-cache, no-store, must-revalidate
+location: https://stackoverflow.com/questions
+x-request-guid: c9ef5e5b-0fef-4dba-af75-b4613875f78d
+feature-policy: microphone 'none'; speaker 'none'
+content-security-policy: upgrade-insecure-requests; frame-ancestors 'self' https://stackexchange.com
+Accept-Ranges: bytes
+Date: Fri, 26 Nov 2021 10:13:30 GMT
+Via: 1.1 varnish
+Connection: close
+X-Served-By: cache-fra19147-FRA
+X-Cache: MISS
+X-Cache-Hits: 0
+X-Timer: S1637921610.307148,VS0,VE92
+Vary: Fastly-SSL
+X-DNS-Prefetch-Control: off
+Set-Cookie: prov=ed3baa78-59ca-a64b-18e2-722ac7c1311f; domain=.stackoverflow.com; expires=Fri, 01-Jan-2055 00:00:00 GMT; path=/; HttpOnly
+
+Connection closed by foreign host.
+```
+В ответ получили код 301 - редирект с HTTP на HTTPS протокол того же url
+
+#### 2. Повторите задание 1 в браузере, используя консоль разработчика F12.
+- откройте вкладку Network
+- отправьте запрос http://stackoverflow.com
+- найдите первый ответ HTTP сервера, откройте вкладку Headers
+- укажите в ответе полученный HTTP код.
+- проверьте время загрузки страницы, какой запрос обрабатывался дольше всего?
+- приложите скриншот консоли браузера в ответ.
+#### 3. Какой IP адрес у вас в интернете?
+
+```shell
+$ dig @resolver4.opendns.com myip.opendns.com +short
+185.105.xxx.xxx
+```
+
+#### 4. Какому провайдеру принадлежит ваш IP адрес? Какой автономной системе AS? Воспользуйтесь утилитой whois
+
+```shell
+$ whois 185.105.xxx.xxx  | grep ^netname
+netname:        DragonNET-WiFi-NAT-WIP-Costumers
+```
+Провайдер DragonNET
+```shell
+$ whois 185.105.xxx.xxx  | grep ^origin
+origin:         AS206912
+```
+AS - AS206912
+
+#### 5. Через какие сети проходит пакет, отправленный с вашего компьютера на адрес 8.8.8.8? Через какие AS? Воспользуйтесь утилитой traceroute
+
+
+#### 6. Повторите задание 5 в утилите mtr. На каком участке наибольшая задержка - delay?
+
+
+#### 7. Какие DNS сервера отвечают за доменное имя dns.google? Какие A записи? воспользуйтесь утилитой dig
+#### 8. Проверьте PTR записи для IP адресов из задания 7. Какое доменное имя привязано к IP? воспользуйтесь утилитой dig
+
+</details>
+
+### Домашнее задание к занятию "3.5. Файловые системы"
 
 <details>
 
