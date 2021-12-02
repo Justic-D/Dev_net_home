@@ -53,6 +53,59 @@ Paths: (24 available, best #10, table default)
 
 #### 2. Создайте dummy0 интерфейс в Ubuntu. Добавьте несколько статических маршрутов. Проверьте таблицу маршрутизации.
 
+Запуск модуля
+```shell
+# echo "dummy" > /etc/modules-load.d/dummy.conf
+# echo "options dummy numdummies=2" > /etc/modprobe.d/dummy.conf
+```
+Настройка интерфейса
+```shell
+# cat << "EOF" >> /etc/systemd/network/10-dummy0.netdev
+[NetDev]
+Name=dummy0
+Kind=dummy
+EOF
+# cat << "EOF" >> /etc/systemd/network/20-dummy0.network
+[Match]
+Name=dummy0
+
+[Network]
+Address=10.0.8.1/24
+EOF
+#
+#
+# systemctl restart systemd-networkd
+```
+Добавление статического маршрута
+```shell
+# nano /etc/netplan/02-networkd.yaml
+network:
+  version: 2
+  ethernets:
+    eth0:
+      optional: true
+      addresses:
+        - 10.0.2.3/24
+      routes:
+        - to: 10.0.4.0/24
+          via: 10.0.2.2
+```
+Таблица маршрутизации
+```shell
+# ip r
+default via 10.0.2.2 dev eth0 proto dhcp src 10.0.2.15 metric 100
+10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.3
+10.0.2.2 dev eth0 proto dhcp scope link src 10.0.2.15 metric 100
+10.0.4.0/24 via 10.0.2.2 dev eth0 proto static
+10.0.8.0/24 dev dummy0 proto kernel scope link src 10.0.8.1
+```
+Статический маршрут
+```shell
+# ip r | grep static
+10.0.4.0/24 via 10.0.2.2 dev eth0 proto static
+```
+
+
 #### 3. Проверьте открытые TCP порты в Ubuntu, какие протоколы и приложения используют эти порты? Приведите несколько примеров.
 ```shell
 # ss -tnlp
@@ -89,9 +142,12 @@ UNCONN   0        0                    [::]:111                [::]:*       user
 # nano /etc/nginx/conf.d/balancer.conf
 http {
   upstream backend_devops {
-      #Round Robin - default
+      #default Round Robin
+      #least_conn; #Least connected load balancing 
+      #ip_hash; #Session persistence
       server 10.1.0.101;
       server 10.1.0.102;
+      #server 10.1.0.103 weight=3; #Weighted load balancing
   }
 
   server {
@@ -133,6 +189,62 @@ stream {
 #### 7*. Установите bird2, настройте динамический протокол маршрутизации RIP.
 
 #### 8*. Установите Netbox, создайте несколько IP префиксов, используя curl проверьте работу API.
+
+Установка docker
+```shell
+# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+# echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# sudo apt-get update
+# sudo apt-get install docker-ce docker-ce-cli containerd.io
+# apt install docker-compose
+```
+Запуск Netbox
+```shell
+# git clone -b release https://github.com/netbox-community/netbox-docker.git
+# cd netbox-docker
+# tee docker-compose.override.yml <<EOF
+version: '3.4'
+services:
+  netbox:
+    ports:
+      - 8000:8080
+EOF
+# docker-compose pull
+# docker-compose up
+```
+Запрос на создание префикса через `curl`
+```shell
+# $ sudo curl -ss -X POST -H "Authorization: Token 0123456789abcdef0123456789abcdef01234567" -H "Content-Type: application/json" -H "Accept: application/json; indent=4" http://10.0.2.15:8000/api/ipam/prefixes/ --data '{"prefix": "10.0.8.0/24"}'
+{
+    "id": 8,
+    "url": "http://10.0.2.15:8000/api/ipam/prefixes/8/",
+    "display": "10.0.8.0/24",
+    "family": {
+        "value": 4,
+        "label": "IPv4"
+    },
+    "prefix": "10.0.8.0/24",
+    "site": null,
+    "vrf": null,
+    "tenant": null,
+    "vlan": null,
+    "status": {
+        "value": "active",
+        "label": "Active"
+    },
+    "role": null,
+    "is_pool": false,
+    "mark_utilized": false,
+    "description": "",
+    "tags": [],
+    "custom_fields": {},
+    "created": "2021-12-02",
+    "last_updated": "2021-12-02T15:03:45.193570Z",
+    "children": 0,
+    "_depth": 0
+}
+```
+![](pic/netbox.png)
 
 
 </details>
