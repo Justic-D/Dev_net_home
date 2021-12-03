@@ -1,3 +1,86 @@
+### Домашнее задание к занятию "3.9. Элементы безопасности информационных систем"
+
+<details>
+
+#### 1. Установите Bitwarden плагин для браузера. Зарегистрируйтесь и сохраните несколько паролей.
+![](pic/Bitwarden1.png)
+#### 2. Установите Google authenticator на мобильный телефон. Настройте вход в Bitwarden аккаунт через Google authenticator OTP.
+![](pic/Bitwarden2.png)
+#### 3. Установите apache2, сгенерируйте самоподписанный сертификат, настройте тестовый сайт для работы по HTTPS.
+```shell
+$ sudo apt install apache2
+```
+```shell
+$ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+Generating a RSA private key
+.............+++++
+................+++++
+writing new private key to '/etc/ssl/private/apache-selfsigned.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [AU]:
+State or Province Name (full name) [Some-State]:
+Locality Name (eg, city) []:
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (e.g. server FQDN or YOUR name) []:
+Email Address []:
+```
+```shell
+$ sudo a2enmod ssl
+$ sudo systemctl restart apache2
+
+```
+
+#### 4. Проверьте на TLS уязвимости произвольный сайт в интернете.
+```shell
+# docker run --rm -ti  drwetter/testssl.sh https://kiprinform.com
+
+```
+#### 5. Установите на Ubuntu ssh сервер, сгенерируйте новый приватный ключ. Скопируйте свой публичный ключ на другой сервер. Подключитесь к серверу по SSH-ключу.
+
+#### 6. Переименуйте файлы ключей из задания 5. Настройте файл конфигурации SSH клиента, так чтобы вход на удаленный сервер осуществлялся по имени сервера.
+
+#### 7. Соберите дамп трафика утилитой tcpdump в формате pcap, 100 пакетов. Откройте файл pcap в Wireshark.
+```shell
+# tcpdump -nnei any -c 100 -w 100packets.pcap
+tcpdump: listening on any, link-type LINUX_SLL (Linux cooked v1), capture size 262144 bytes
+100 packets captured
+178 packets received by filter
+0 packets dropped by kernel
+```
+![](pic/Wireshark.png)
+
+#### 8*. Просканируйте хост scanme.nmap.org. Какие сервисы запущены?
+
+```shell
+# nmap scanme.nmap.org
+Starting Nmap 7.80 ( https://nmap.org ) at 2021-12-03 15:52 EET
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.22s latency).
+Other addresses for scanme.nmap.org (not scanned): 2600:3c01::f03c:91ff:fe18:bb2f
+Not shown: 996 closed ports
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+9929/tcp  open  nping-echo
+31337/tcp open  Elite
+
+Nmap done: 1 IP address (1 host up) scanned in 2.68 seconds
+```
+Подняты ssh, web-server, nping-echo server, открыт порт 31337
+
+#### 9*. Установите и настройте фаервол ufw на web-сервер из задания 3. Откройте доступ снаружи только к портам 22,80,443
+
+</details>
+
+
 ### Домашнее задание к занятию "3.8. Компьютерные сети, лекция 3"  
 
 <details>
