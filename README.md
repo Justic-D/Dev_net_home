@@ -133,57 +133,81 @@ UNCONN   0        0                    [::]:111                [::]:*       user
 #### 5. Используя diagrams.net, создайте L3 диаграмму вашей домашней сети или любой другой сети, с которой вы работали.
 ![](pic/network_diagram.png)
 #### 6*. Установите Nginx, настройте в режиме балансировщика TCP или UDP.
-```shell
-# apt install nginx
-```
-Удалить конфиг по умолчанию, создать конфиг балансировщика
-```shell
-# rm -f /etc/nginx/sites-enabled/default
-# nano /etc/nginx/conf.d/balancer.conf
-http {
-  upstream backend_devops {
-      #default Round Robin
-      #least_conn; #Least connected load balancing 
-      #ip_hash; #Session persistence
-      server 10.1.0.101;
-      server 10.1.0.102;
-      #server 10.1.0.103 weight=3; #Weighted load balancing
-  }
 
-  server {
-      listen 80;
+Создаем 4 VM (1-ый - клиент, 2-ой - балансировщик, 3-ий и 4-ый - веб-серверы)
 
-      location / {
-          proxy_pass http://backend_devops;
-      }
-  }
+vagrantfile
+```shell
+boxes = {
+  'netology1' => '10',
+  'netology2' => '60',
+  'netology3' => '90',
+  'netology4' => '120'
 }
+
+Vagrant.configure("2") do |config|
+  config.vm.network "private_network", virtualbox__intnet: true, auto_config: false
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+    v.cpus = 1
+  end
+  config.vm.box = "bento/ubuntu-20.04"
+
+  boxes.each do |k, v|
+    config.vm.define k do |node|
+      node.vm.provision "shell" do |s|
+        s.inline = "hostname $1;"\
+          "ip addr add $2 dev eth1;"\
+          "ip link set dev eth1 up;"\
+          "apt -y update;"\
+          "apt -y install nginx;"\
+          "mkdir -p /data/www;"\
+          "echo Hello from $1 >> /data/www/index.html;"
+        s.args = [k, "172.28.128.#{v}/24"]
+      end
+    end
+  end
+end
 ```
-Отключить `systemd-resolved`
+На балансировщике (VM2) добавляем конфиг
 ```shell
-# systemctl disable systemd-resolved.service
-# systemctl stop systemd-resolved.service
+$ sudo nano /etc/nginx/conf.d/proxyTCP.conf
+     upstream backend1 {
+         server 172.28.128.90:8080;
+         server 172.28.128.120:8080;
+     }
+     server {
+         listen 8080;
+         location / {
+             proxy_pass http://backend1;
+         }
+     }
+
+$ sudo nginx -s reload
 ```
-Создать конфиг DNS proxy
+На веб-серверах (VM3, VM4) меняем конфиги
 ```shell
-# nano /etc/nginx/modules-enabled/66-devops.conf
-stream {
-
-    upstream dns_servers {
-        server 1.1.1.1:53;
-        server 8.8.8.8:53;
-    }
-
-    server {
-        listen 53 udp;
-        listen 53; #tcp 
-        proxy_pass dns_servers;
-        error_log /var/log/nginx/dns.log info;
-        proxy_responses 1;
-        proxy_timeout 1s;
-    }
-
+$ sudo nano /etc/nginx/sites-enabled/default
+server {
+     listen 8080;
+     location / {
+             root /data/www;
+             index  index.html index.htm;
+     }
 }
+
+$ sudo nginx -s reload
+```
+Отдаем запрос с VM1
+```shell
+$ curl 172.28.128.60:8080
+Hello from netology3
+$ curl 172.28.128.60:8080
+Hello from netology4
+$ curl 172.28.128.60:8080
+Hello from netology3
+$ curl 172.28.128.60:8080
+Hello from netology4
 ```
 
 #### 7*. Установите bird2, настройте динамический протокол маршрутизации RIP.
