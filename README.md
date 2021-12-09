@@ -359,7 +359,7 @@ do
     then
       echo $? $host `date` >> nc_test.log
     else
-      echo $? $host `error` >> nc_test.log
+      echo $? $host error >> nc_test.log
       test=0
     fi
   done
