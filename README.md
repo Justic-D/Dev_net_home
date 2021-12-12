@@ -279,3 +279,16 @@ root@vagrant:~# crontab -l
 ```
 
 </details>
+
+### [Домашнее задание к занятию "4.1. Командная оболочка Bash: Практические навыки"](https://github.com/Bora2k3/devops-netology/blob/main/04-script-01-bash.md)
+### [Домашнее задание к занятию "3.9. Элементы безопасности информационных систем"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-09-security.md)
+### [Домашнее задание к занятию "3.8. Компьютерные сети, лекция 3"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-08-net.md)
+### [Домашнее задание к занятию "3.7. Компьютерные сети, лекция 2"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-07-net.md)
+### [Домашнее задание к занятию "3.6. Компьютерные сети, лекция 1"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-06-net.md)
+### [Домашнее задание к занятию "3.5. Файловые системы"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-05-fs.md)
+### [Домашнее задание к занятию "3.4. Операционные системы, лекция 2"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-04-os.md)
+### [Домашнее задание к занятию "3.3. Операционные системы, лекция 1"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-03-os.md)
+### [Домашнее задание к занятию "3.2. Работа в терминале, лекция 2"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-02-terminal.md)
+### [Домашнее задание к занятию "3.1 Работа в терминале, лекция 1"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-01-terminal.md)
+### [Домашнее задание к занятию "2.4 Инструменты Git"](https://github.com/Bora2k3/devops-netology/blob/main/02-git-04-tools.md)
+### [Домашнее задание к занятию "2.1 Системы контроля версий."](https://github.com/Bora2k3/devops-netology/blob/main/02-git-01-vcs.md)
