@@ -101,7 +101,7 @@ def check_site_dns(site_url, site_dict):
         with open("servers_ip.json", "w") as fp_json:
             json.dump(site_dict, fp_json)
         with open("servers_ip.yaml", "w") as fp_yaml:
-            yaml.dump(site_dict, fp_yaml)
+            yaml.dump(site_dict, fp_yaml, explicit_start=True)
 
     return site_dict
 
@@ -145,6 +145,7 @@ site_dict== {'drive.google.com': ['142.250.185.78'], 'mail.google.com': ['142.25
 
 #### yml-файл(ы), который(е) записал ваш скрипт:
 ```yaml
+---
 drive.google.com:
 - 142.250.185.78
 google.com:
