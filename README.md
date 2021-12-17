@@ -280,6 +280,7 @@ root@vagrant:~# crontab -l
 
 </details>
 
+### [Домашнее задание к занятию "4.3. Языки разметки JSON и YAML"](https://github.com/Bora2k3/devops-netology/blob/main/04-script-03-yaml.md)
 ### [Домашнее задание к занятию "4.2. Использование Python для решения типовых DevOps задач"](https://github.com/Bora2k3/devops-netology/blob/main/04-script-02-py.md)
 ### [Домашнее задание к занятию "4.1. Командная оболочка Bash: Практические навыки"](https://github.com/Bora2k3/devops-netology/blob/main/04-script-01-bash.md)
 ### [Домашнее задание к занятию "3.9. Элементы безопасности информационных систем"](https://github.com/Bora2k3/devops-netology/blob/main/03-sysadmin-09-security.md)
