@@ -101,7 +101,7 @@ def check_site_dns(site_url, site_dict):
         with open("servers_ip.json", "w") as fp_json:
             json.dump(site_dict, fp_json)
         with open("servers_ip.yaml", "w") as fp_yaml:
-            yaml.dump(site_dict, fp_yaml, explicit_start=True)
+            yaml.dump(site_dict, fp_yaml, explicit_start=True, explicit_end=True)
 
     return site_dict
 
@@ -152,6 +152,7 @@ google.com:
 - 142.250.184.238
 mail.google.com:
 - 142.250.186.101
+...
 ```
 
 ### Дополнительное задание (со звездочкой*) - необязательно к выполнению
